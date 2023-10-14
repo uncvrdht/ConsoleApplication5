@@ -1,328 +1,155 @@
 ﻿#include <iostream>
+#include <string>
+
 using namespace std;
-
-/// <summary>
-/// Класс, представляющий дату и время.
-/// </summary>
-class DateTime
-{
-    int day;
-    int month;
-    int year;
-
+class DateTime {
 public:
-    /// <summary>
-    /// Устанавливает день.
-    /// </summary>
-    /// <param name="day">День</param>
-    void SetDay(int day)
-    {
-        if (day > 0 && day <= 31) // TO DO: february 28-29, april june 30
-        {
-            this->day = day;
-        }
-        else
-        {
-            cout << "Invalid value!" << endl;
-            throw "ERROR!\n";
-        }
-    }
+    DateTime(int day, int month, int year) : day(day), month(month), year(year) {}
 
-    /// <summary>
-    /// Возвращает день.
-    /// </summary>
-    /// <returns>День</returns>
-    int GetDay() const
-    {
-        return day;
-    }
+    
+    int getDay() const { return day; }
+    int getMonth() const { return month; }
+    int getYear() const { return year; }
 
-    /// <summary>
-    /// Устанавливает месяц.
-    /// </summary>
-    /// <param name="month">Месяц</param>
-    void SetMonth(int month)
-    {
-        if (month >= 1 && month <= 12)
-        {
-            this->month = month;
-        }
-        else
-        {
-            cout << "Invalid value!" << endl;
-            throw "ERROR!\n";
-        }
-    }
-
-    /// <summary>
-    /// Возвращает месяц.
-    /// </summary>
-    /// <returns>Месяц</returns>
-    int GetMonth() const
-    {
-        return month;
-    }
-
-    /// <summary>
-    /// Устанавливает год.
-    /// </summary>
-    void SetYear(int year)
-    {
-        this->year = year;
-    }
-
-    /// <summary>
-    /// Возвращает год.
-    /// </summary>
-    /// <returns>Год</returns>
-    int GetYear() const
-    {
-        return year;
-    }
-
-    /// <summary>
-    /// Конструктор по умолчанию, устанавливает дату 23.03.2005.
-    /// </summary>
-    DateTime() : DateTime(23, 3, 2005) {}
-
-    /// <summary>
-    /// Конструктор с параметрами дня и месяца, устанавливает год 2004.
-    /// </summary>
-    /// <param name="day">День</param>
-    /// <param name="month">Месяц</param>
-    DateTime(int day, int month) : DateTime(day, month, 2004) {}
-
-    /// <summary>
-    /// Конструктор с параметрами дня, месяца и года.
-    /// </summary>
-    /// <param name="day">День</param>
-    /// <param name="month">Месяц</param>
-    /// <param name="year">Год</param>
-    DateTime(int day, int month, int year)
-    {
-        SetDay(day);
-        SetMonth(month);
-        SetYear(year);
-    }
-
-    /// <summary>
-    /// Выводит дату в консоль.
-    /// </summary>
-    void Print() const
-    {
-        cout << "Date: " << day << "." << month << "." << year << endl;
-    }
+private:
+    int day, month, year;
 };
 
-//////////////////////////////////////////////////////
-
-/// <summary>
-/// Класс, представляющий студента.
-/// </summary>
-class Student
-{
-    string name;
-    string surname;
-    DateTime birthday;
-    DateTime study_start; // 01.09.2022
-
-    // TO DO: 
-
-    int* hometask_rates = nullptr;
-    int hometask_rates_count = 0;
-
-    // TO DO: practice and exams
-
+class Student {
 public:
-    /// <summary>
-    /// Конструктор по умолчанию, создает студента с пустыми данными.
-    /// </summary>
-    Student()
-    {
-        SetName("");
-        SetSurname("");
-        SetBirthday({ 9, 10, 2000 });
-        SetStudyStart({ 1, 9, 2022 });
+    Student() : Student("", "", "", DateTime(0, 0, 0), "", "") {}
+
+    Student(const string& lastName, const string& firstName, const string& middleName,
+        const DateTime& birthDate, const string& homeAddress, const string& phoneNumber)
+        : lastName(lastName), firstName(firstName), middleName(middleName),
+        birthDate(birthDate), homeAddress(homeAddress), phoneNumber(phoneNumber),
+        practiceMarks(nullptr), homeworkMarks(nullptr), examMarks(nullptr),
+        practiceCount(0), homeworkCount(0), examCount(0) {}
+
+    // Геттеры и сеттеры для полей
+    const string& getLastName() const { return lastName; }
+    const string& getFirstName() const { return firstName; }
+    const string& getMiddleName() const { return middleName; }
+    const DateTime& getBirthDate() const { return birthDate; }
+    const string& getHomeAddress() const { return homeAddress; }
+    const string& getPhoneNumber() const { return phoneNumber; }
+
+    void setLastName(const string& lastName) { this->lastName = lastName; }
+    void setFirstName(const string& firstName) { this->firstName = firstName; }
+    void setMiddleName(const string& middleName) { this->middleName = middleName; }
+    void setBirthDate(const DateTime& birthDate) { this->birthDate = birthDate; }
+    void setHomeAddress(const string& homeAddress) { this->homeAddress = homeAddress; }
+    void setPhoneNumber(const string& phoneNumber) { this->phoneNumber = phoneNumber; }
+
+    // Метод для вывода информации о студенте
+    void displayStudentInfo() const {
+        cout << "Last Name: " << lastName << endl;
+        cout << "First Name: " << firstName << endl;
+        cout << "Middle Name: " << middleName << endl;
+        cout << "Birth Date: " << birthDate.getDay() << "/" << birthDate.getMonth() << "/" << birthDate.getYear() << endl;
+        cout << "Home Address: " << homeAddress << endl;
+        cout << "Phone Number: " << phoneNumber << endl;
     }
 
-    // TO DO: constructors overloading !!!
+    // Геттеры для количества оценок
+    int getPracticeCount() const { return practiceCount; }
+    int getHomeworkCount() const { return homeworkCount; }
+    int getExamCount() const { return examCount; }
 
-    // TO DO: make copy c-tor
-
-    /// <summary>
-    /// Деструктор класса Student.
-    /// </summary>
-    ~Student()
-    {
-        if (hometask_rates != nullptr)
-        {
-            delete[] hometask_rates;
-            hometask_rates = nullptr;
+    // Методы для добавления оценок
+    void addPracticeMark(int mark) {
+        if (practiceCount == 0) {
+            practiceMarks = new int[1];
+            practiceMarks[0] = mark;
+            practiceCount = 1;
+        }
+        else {
+            int* newPracticeMarks = new int[practiceCount + 1];
+            for (int i = 0; i < practiceCount; i++) {
+                newPracticeMarks[i] = practiceMarks[i];
+            }
+            newPracticeMarks[practiceCount] = mark;
+            delete[] practiceMarks;
+            practiceMarks = newPracticeMarks;
+            practiceCount++;
         }
     }
 
-    /// <summary>
-    /// Устанавливает имя студента.
-    /// </summary>
-    /// <param name="name">Имя студента</param>
-    void SetName(string name)
-    {
-        this->name = name;
+    void addHomeworkMark(int mark) {
+        if (homeworkCount == 0) {
+            homeworkMarks = new int[1];
+            homeworkMarks[0] = mark;
+            homeworkCount = 1;
+        }
+        else {
+            int* newHomeworkMarks = new int[homeworkCount + 1];
+            for (int i = 0; i < homeworkCount; i++) {
+                newHomeworkMarks[i] = homeworkMarks[i];
+            }
+            newHomeworkMarks[homeworkCount] = mark;
+            delete[] homeworkMarks;
+            homeworkMarks = newHomeworkMarks;
+            homeworkCount++;
+        }
     }
 
-    /// <summary>
-    /// Возвращает имя студента.
-    /// </summary>
-    /// <returns>Имя студента</returns>
-    string GetName() const
-    {
-        return name;
+    void addExamMark(int mark) {
+        if (examCount == 0) {
+            examMarks = new int[1];
+            examMarks[0] = mark;
+            examCount = 1;
+        }
+        else {
+            int* newExamMarks = new int[examCount + 1];
+            for (int i = 0; i < examCount; i++) {
+                newExamMarks[i] = examMarks[i];
+            }
+            newExamMarks[examCount] = mark;
+            delete[] examMarks;
+            examMarks = newExamMarks;
+            examCount++;
+        }
+    }
+
+    // Деструктор для освобождения динамически выделенной памяти
+    ~Student() {
+        delete[] practiceMarks;
+        delete[] homeworkMarks;
+        delete[] examMarks;
     }
 
 private:
-    void SetBirthday(const DateTime& birthday)
-    {
-        this->birthday = birthday;
-    }
-
-public:
-    /// <summary>
-    /// Возвращает дату рождения студента.
-    /// </summary>
-    /// <returns>Дата рождения</returns>
-    DateTime GetBirthday() const
-    {
-        return birthday;
-    }
-
-    /// <summary>
-    /// Устанавливает дату начала учебы студента.
-    /// </summary>
-    /// <param name="study_start">Дата начала учебы</param>
-    void SetStudyStart(const DateTime& study_start)
-    {
-        this->study_start = study_start;
-    }
-
-    /// <summary>
-    /// Возвращает дату начала учебы студента.
-    /// </summary>
-    /// <returns>Дата начала учебы</returns>
-    DateTime GetStudyStart() const
-    {
-        return study_start;
-    }
-
-    /// <summary>
-    /// Устанавливает фамилию студента.
-    /// </summary>
-    /// <param name="surname">Фамилия студента</param>
-    void SetSurname(string surname)
-    {
-        this->surname = surname;
-    }
-
-    /// <summary>
-    /// Возвращает фамилию студента.
-    /// </summary>
-    /// <returns>Фамилия студента</returns>
-    string GetSurname() const
-    {
-        return surname;
-    }
-
-    /// <summary>
-    /// Добавляет оценку за домашнее задание студенту.
-    /// </summary>
-    /// <param name="rate">Оценка (от 1 до 12)</param>
-    void AddHometaskRate(unsigned int rate)
-    {
-        if (rate < 1 || rate > 12)
-        {
-            cout << "Incorrect value for parameter rate. Value must be from 1 to 12\n";
-            throw "ERROR!";
-        }
-
-        if (hometask_rates_count == 0)
-        {
-            hometask_rates = new int[1];
-            hometask_rates[0] = rate;
-        }
-        else
-        {
-            int* temp = new int[hometask_rates_count + 1];
-            for (int i = 0; i < hometask_rates_count; i++)
-                temp[i] = hometask_rates[i];
-            temp[hometask_rates_count] = rate;
-            delete[] hometask_rates;
-            hometask_rates = temp;
-        }
-        hometask_rates_count++;
-    }
-
-    /// <summary>
-    /// Выводит оценки за домашние задания в консоль.
-    /// </summary>
-    void PrintHometaskRates() const
-    {
-        cout << "Hometasks rates: ";
-        for (int i = 0; i < hometask_rates_count; i++)
-        {
-            cout << hometask_rates[i] << ", ";
-        }
-        cout << "\n";
-    }
-
-    /// <summary>
-    /// Получает оценку за домашнее задание по индексу.
-    /// </summary>
-    /// <param name="index">Индекс оценки</param>
-    /// <returns>Оценка</returns>
-    int GetHometaskRateByIndex(unsigned int index)
-    {
-        if (index >= hometask_rates_count)
-        {
-            cout << "Incorrect index when accessing the evaluation array\n";
-            throw "ERROR!";
-        }
-        return hometask_rates[index];
-    }
-
-    /// <summary>
-    /// Возвращает количество оценок за домашние задания.
-    /// </summary>
-    /// <returns>Количество оценок</returns>
-    int GetHometasksRatesCount() const
-    {
-        return hometask_rates_count;
-    }
-
-    // TO DO: show what can happen if return pointer to array
-    /* int* GetHometaskRates() const
-    {
-        int* copy = new int[hometask_rates_count];
-        for (int i = 0; i < hometask_rates_count; i++)
-        {
-            copy[i] = hometask_rates[i];
-        }
-        return copy;
-    }*/
-
-    // TO DO: a lot of work here...
+    string lastName;
+    string firstName;
+    string middleName;
+    DateTime birthDate;
+    string homeAddress;
+    string phoneNumber;
+    int* practiceMarks;
+    int* homeworkMarks;
+    int* examMarks;
+    int practiceCount;
+    int homeworkCount;
+    int examCount;
 };
 
-int main()
-{
-    Student s;
-    s.AddHometaskRate(10);
-    s.AddHometaskRate(12);
-    s.AddHometaskRate(5);
-    s.AddHometaskRate(2);
-    s.PrintHometaskRates();
-    s.AddHometaskRate(7);
-    s.AddHometaskRate(7);
-    s.AddHometaskRate(8);
-    s.AddHometaskRate(8);
-    s.PrintHometaskRates();
-    cout << s.GetHometasksRatesCount() << "\n"; // 8
+int main() {
+    // Пример использования класса Student
+    Student student("Smith", "John", "Doe", DateTime(5, 10, 2000), "123 Main St", "555-123-4567");
+
+    student.addPracticeMark(90);
+    student.addPracticeMark(85);
+
+    student.addHomeworkMark(95);
+    student.addHomeworkMark(88);
+    student.addHomeworkMark(92);
+
+    student.addExamMark(78);
+
+    student.displayStudentInfo();
+    cout << "Practice Marks: " << student.getPracticeCount() << " marks" << endl;
+    cout << "Homework Marks: " << student.getHomeworkCount() << " marks" << endl;
+    cout << "Exam Marks: " << student.getExamCount() << " marks" << endl;
+
+    return 0;
 }
